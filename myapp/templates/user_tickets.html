@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Tickets</title>
+    <link rel="stylesheet" href="{% static 'css/user_tickets.css' %}">  
+</head>
+<body>
+    <h1>Your Tickets</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.description }}</td>
+                <td>{{ ticket.status }}</td>
+                <td>
+                    {% if ticket.status != 'Completed' %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                        <button type="submit">Mark as Completed</button>
+                    </form>
+                    {% else %}
+                    Completed
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+     <a href="{% url 'home' %}">Go to Home</a>
+</body>
+</html>
